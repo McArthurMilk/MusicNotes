@@ -1,5 +1,5 @@
 // netlify/functions/getSpotifyToken.js
-import fetch from "node-fetch";
+
 
 export async function handler(event, context) {
   const client_id = process.env.SPOTIFY_CLIENT_ID;
