@@ -14,25 +14,21 @@
   <main>
     <section id="entry-form">
       <h2>Add a New Entry</h2>
-      <input type="text" id="song" placeholder="Song title">
-      <input type="text" id="artist" placeholder="Artist">
-      <input type="date" id="date">
-      <textarea id="notes" placeholder="Write your thoughts..."></textarea>
-      <button id="saveBtn">Save Entry</button>
-    </section>
-
-    <section id="search">
-        <h2>Search for a Song</h2>
-        <input type="text" id="searchInput" placeholder="Search songs or artists...">
+      <div>
+        <input id="searchInput" placeholder="Search for a song or album">
         <button id="searchBtn">Search</button>
-        <div id="results"></div>
-    </section>
+      </div>
+
+      <div id="results"></div>
+
+     <h2>Selected Song</h2>
+        <div id="selected-song"></div>
+
+<h2>Your Journal</h2>
+<div id="journal"></div>
+        </section>
 
 
-    <section id="entries">
-      <h2>Previous Entries</h2>
-      <div id="journal"></div>
-    </section>
   </main>
 
   <script src="script.js"></script>

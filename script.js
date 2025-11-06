@@ -3,6 +3,8 @@ const searchInput = document.getElementById("searchInput");
 const resultsDiv = document.getElementById("results");
 const journalDiv = document.getElementById("journal");
 
+const saveEntry = document.getElementByID("saveBtn");
+
 
 async function getSpotifyToken() {
   const res = await fetch("/.netlify/functions/getSpotifyToken");
@@ -40,13 +42,17 @@ function displayResults(tracks) {
   });
 }
 
+let selectedEntry = null; // holds the song user selected
+let entries = JSON.parse(localStorage.getItem("musicJournal")) || [];
+
+// SELECT SONG
 function selectSong(track) {
   const song = track.name;
   const artist = track.artists.map(a => a.name).join(", ");
   const albumArt = track.album.images[0].url;
   const preview = track.preview_url || "No preview available";
 
-  const entry = {
+  selectedEntry = {
     song,
     artist,
     date: new Date().toLocaleDateString(),
@@ -55,37 +61,65 @@ function selectSong(track) {
     preview
   };
 
-  const entries = JSON.parse(localStorage.getItem("musicJournal")) || [];
-  entries.push(entry);
-  localStorage.setItem("musicJournal", JSON.stringify(entries));
+  // Show selected song info on screen
+  document.getElementById("selected-song").innerHTML = `
+    <div class="selected-song">
+      <img src="${albumArt}" width="100">
+      <h3>${song}</h3>
+      <p>${artist}</p>
+      <audio controls src="${preview}"></audio>
+      <textarea id="notes" placeholder="Write your thoughts here..."></textarea>
+      <button id="saveEntry">Save Entry</button>
+    </div>
+  `;
 
-  loadEntries();
-  resultsDiv.innerHTML = "";
+  resultsDiv.innerHTML = ""; // clear search results
   searchInput.value = "";
+
+  // Attach event to the "Save Entry" button dynamically
+  document.getElementById("saveEntry").addEventListener("click", saveEntry);
 }
 
+// SAVE ENTRY
+function saveEntry() {
+  const notes = document.getElementById("notes").value.trim();
+  if (!selectedEntry) return alert("Please select a song first!");
+
+  selectedEntry.notes = notes;
+  entries.push(selectedEntry);
+  localStorage.setItem("musicJournal", JSON.stringify(entries));
+
+  alert("Entry saved!");
+  selectedEntry = null;
+  document.getElementById("selected-song").innerHTML = "";
+  loadEntries();
+}
+
+function loadEntries() {
+  const journalDiv = document.getElementById("journal");
+  journalDiv.innerHTML = "";
+
+  entries.forEach(entry => {
+    const div = document.createElement("div");
+    div.classList.add("entry");
+    div.innerHTML = `
+      <img src="${entry.albumArt}" width="80">
+      <h4>${entry.song}</h4>
+      <p><strong>${entry.artist}</strong> — ${entry.date}</p>
+      <p>${entry.notes}</p>
+      <audio controls src="${entry.preview}"></audio>
+    `;
+    journalDiv.appendChild(div);
+  });
+}
+
+// SEARCH BUTTON
 searchBtn.addEventListener("click", () => {
   const query = searchInput.value.trim();
   if (query) searchSpotify(query);
 });
 
-function loadEntries() {
-  const entries = JSON.parse(localStorage.getItem("musicJournal")) || [];
-  journalDiv.innerHTML = "";
-  entries.forEach(entry => {
-    const div = document.createElement("div");
-    div.classList.add("entry");
-    div.innerHTML = `
-      <h3>${entry.song} - ${entry.artist}</h3>
-      <p><strong>Date:</strong> ${entry.date}</p>
-      ${entry.albumArt ? `<img src="${entry.albumArt}" width="100">` : ""}
-      ${entry.preview && entry.preview !== "No preview available" ? `
-        <audio controls src="${entry.preview}"></audio>
-      ` : `<p><em>${entry.preview}</em></p>`}
-      <hr>
-    `;
-    journalDiv.appendChild(div);
-  });
-}
+// Load previous entries on page load
+loadEntries();
 
 window.onload = loadEntries;
