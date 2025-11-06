@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Journal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>My Music Journal 🎵</h1>
+  </header>
+
+  <main>
+    <section id="entry-form">
+      <h2>Add a New Entry</h2>
+      <input type="text" id="song" placeholder="Song title">
+      <input type="text" id="artist" placeholder="Artist">
+      <input type="date" id="date">
+      <textarea id="notes" placeholder="Write your thoughts..."></textarea>
+      <button id="saveBtn">Save Entry</button>
+    </section>
+
+    <section id="entries">
+      <h2>Previous Entries</h2>
+      <div id="journal"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
