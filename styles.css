@@ -1,45 +1,48 @@
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #fafafa;
+  background-color: #f2e9de; /* retro parchment */
   margin: 0;
   padding: 0;
-  color: #222;
+  color: #1f1b16; /* deep coffee */
 }
 
 header {
   text-align: center;
-  background-color: #111;
-  color: white;
+  background-color: #2b211d; /* espresso */
+  color: #f9f4ea; /* warm cream */
   padding: 1rem;
 }
 
 main {
   max-width: 800px;
   margin: 2rem auto;
-  background: white;
+  background: #fff8e7; /* paper */
   padding: 1rem 2rem;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 12px rgba(43, 33, 29, 0.15);
 }
 
 input, textarea {
   width: 100%;
   margin: 0.5rem 0;
   padding: 0.5rem;
-  border: 1px solid #ddd;
+  border: 1px solid #c7b8a1; /* muted tan */
   border-radius: 5px;
+  background-color: #fffaf1;
+  color: #2b211d;
 }
 
 button {
-  background-color: black;
-  color: white;
+  background-color: #3b6b4d; /* vintage green */
+  color: #f9f4ea;
   border: none;
   padding: 0.7rem 1.2rem;
   border-radius: 5px;
   cursor: pointer;
+  box-shadow: 0 2px 0 #2b211d;
 }
 button:hover {
-  background-color: #1e5fbf;
+  background-color: #325b42; /* darker vintage green */
 }
 
 #results {
@@ -54,8 +57,9 @@ button:hover {
   align-items: center;
   gap: 1rem;
   padding: 0.5rem;
-  border: 1px solid #ddd;
+  border: 1px solid #c7b8a1;
   border-radius: 8px;
+  background: #fffaf1;
 }
 
 .result img {
@@ -64,15 +68,16 @@ button:hover {
 
 .selectBtn {
   margin-left: auto;
-  background-color: #1db954;
-  color: black;
+  background-color: #e07a5f; /* retro coral */
+  color: #2b211d;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 5px;
   cursor: pointer;
+  box-shadow: 0 2px 0 #2b211d;
 }
 
 .selectBtn:hover {
-  background-color: #169c46;
+  background-color: #c96b53;
 }
 
