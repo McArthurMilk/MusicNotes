@@ -13,14 +13,55 @@ async function getSpotifyToken() {
 }
 
 async function searchSpotify(query) {
-  const token = await getSpotifyToken();
-  const response = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=5`, {
-    headers: {
-      Authorization: `Bearer ${token}`
+  const resultsDiv = document.getElementById("results");
+  resultsDiv.innerHTML = "Searching...";
+
+  try {
+    // Call your Netlify function to get a Spotify token
+    const tokenResponse = await fetch("/.netlify/functions/getSpotifyToken");
+    const tokenData = await tokenResponse.json();
+
+    if (!tokenData.access_token) {
+      resultsDiv.innerHTML = "Error: no access token returned";
+      return;
     }
-  });
-  const data = await response.json();
-  displayResults(data.tracks.items);
+
+    const token = tokenData.access_token;
+
+    // Search Spotify API
+    const searchResponse = await fetch(
+      `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=5`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    const searchData = await searchResponse.json();
+
+    // If nothing found
+    if (!searchData.tracks || searchData.tracks.items.length === 0) {
+      resultsDiv.innerHTML = "No results found.";
+      return;
+    }
+
+    // Display results
+    resultsDiv.innerHTML = "";
+    searchData.tracks.items.forEach(track => {
+      const div = document.createElement("div");
+      div.classList.add("track-result");
+      div.innerHTML = `
+        <img src="${track.album.images[0].url}" width="80">
+        <span>${track.name} — ${track.artists.map(a => a.name).join(", ")}</span>
+      `;
+      div.addEventListener("click", () => selectSong(track));
+      resultsDiv.appendChild(div);
+    });
+  } catch (err) {
+    console.error(err);
+    resultsDiv.innerHTML = "Error fetching results.";
+  }
 }
 
 function displayResults(tracks) {
