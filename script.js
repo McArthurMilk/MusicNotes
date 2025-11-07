@@ -3,7 +3,7 @@ const searchInput = document.getElementById("searchInput");
 const resultsDiv = document.getElementById("results");
 const journalDiv = document.getElementById("journal");
 
-const saveEntry = document.getElementByID("saveBtn");
+//const saveEntry = document.getElementById("saveBtn");
 
 
 async function getSpotifyToken() {
@@ -60,7 +60,7 @@ async function searchSpotify(query) {
     });
   } catch (err) {
     console.error(err);
-    resultsDiv.innerHTML = "Error fetching results.";
+    resultsDiv.innerHTML = `Error fetching results: ${err.message}`;
   }
 }
 
